@@ -23,7 +23,7 @@ async def search(bot, message):
            async for msg in User.search_messages(chat_id=channel, query=query):
                # Forward the message instead of sending a link
                await msg.forward(message.chat.id)
-               break  # Stop after forwarding the first matching message
+               break  # Stop after forwarding the Third matching message
     except Exception as e:
        await message.reply_text(f"❌ Error: {e}")
 
