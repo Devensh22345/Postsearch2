@@ -22,30 +22,23 @@ async def search(bot, message):
     if message.text.startswith("/"):
         return
 
-    query = message.text
+    query = message.text.strip().lower()  # Convert the query to lowercase for case-insensitive comparison
     forward_count = 0  # Counter to limit the number of forwards
 
     try:
         for channel in channels:
             async for msg in User.search_messages(chat_id=channel, query=query):
-                if forward_count < FORWARD_LIMIT:  # Check the limit before forwarding
-                    await msg.forward(message.chat.id)
-                    forward_count += 1
-                else:
-                    break
+                # Check for exact match
+                message_text = (msg.text or msg.caption).strip().lower()  # Ensure text is lowercase and stripped
+                if query == message_text:
+                    if forward_count < FORWARD_LIMIT:  # Check the limit before forwarding
+                        await msg.forward(message.chat.id)
+                        forward_count += 1
+                    else:
+                        break
 
         if forward_count == 0:
-            # If no results found, provide suggestions
-            movies = await search_imdb(query)
-            buttons = []
-            for movie in movies:
-                buttons.append([InlineKeyboardButton(movie['title'], callback_data=f"recheck_{movie['id']}")])
-
-            await message.reply_photo(
-                photo="https://graph.org/file/20f2a42c266a15b3118c8.jpg",
-                caption="<b><I>I couldn't find anything related to your query 😕.\nDid you mean any of these?</I></b>",
-                reply_markup=InlineKeyboardMarkup(buttons)
-            )
+            await message.reply_text("No exact match found for your query.")
     except Exception as e:
         await message.reply_text(f"❌ Error: {e}")
 
@@ -69,17 +62,17 @@ async def recheck(bot, update):
     try:
         for channel in channels:
             async for msg in User.search_messages(chat_id=channel, query=query):
-                if forward_count < FORWARD_LIMIT:  # Check the limit before forwarding
-                    await msg.forward(update.message.chat.id)
-                    forward_count += 1
-                else:
-                    break
+                # Check for exact match
+                message_text = (msg.text or msg.caption).strip().lower()
+                if query == message_text:
+                    if forward_count < FORWARD_LIMIT:  # Check the limit before forwarding
+                        await msg.forward(update.message.chat.id)
+                        forward_count += 1
+                    else:
+                        break
 
         if forward_count == 0:
-            return await update.message.edit(
-                "Still no results found! Please request to group admin",
-                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🎯 Request To Admin 🎯", callback_data=f"request_{id}")]])
-            )
+            await update.message.edit("Still no exact match found!")
     except Exception as e:
         await update.message.edit(f"❌ Error: {e}")
 
