@@ -26,7 +26,7 @@ Get connected channels list with - /connections</b>"""
 
 ✯ Mʏ Nᴀᴍᴇ:  {}
 ✯ Cʀᴇᴀᴛᴏʀ: <a href='tg://user?id=6872968794'>🔥︵L͙I͙G͙H͙T͙ ✿ Y͙A͙G͙A͙M͙I͙︵🔥</a>
-✯ SUPPORT: <a href='https://t.me/DK_ROBOTS_GROUP'>@DKxBOT_GROUP</a>
+✯ SUPPORT: <a href='https://t.me/DKxbot_GROUP'>@DKxBOT_GROUP</a>
 ✯ CHANNEL: <a href='https://t.me/dk_x_bot'>@DK_x_BOT</a>
 ✯ DONATE: : <a href='tg://user?id=6872968794'>BUY A COFEE</a></b>"""
 
